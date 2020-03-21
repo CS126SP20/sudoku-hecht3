@@ -1,12 +1,19 @@
-// Copyright (c) 2020 [Your Name]. All rights reserved.
+// Copyright (c) 2020 connell. All rights reserved.
 
 #define CATCH_CONFIG_MAIN
 
 #include <catch2/catch.hpp>
 #include <sudoku/solver.h>
+#include <sudoku/sudoku_game.h>
 
 
-// TODO(you): Remove this unnecessary test case.
 TEST_CASE("Sanity Check", "[addition]") {
-  REQUIRE(1 + 1 == 2);
+  std::ifstream puzzle_stream("data/emptyBoard.spf");
+  sudoku_game parser;
+  std::istream& input_stream = puzzle_stream;
+  std::ostream& output_stream = std::cout;
+  std::string tag;
+  input_stream >> parser;
+  output_stream << parser;
+  REQUIRE(true);
 }
