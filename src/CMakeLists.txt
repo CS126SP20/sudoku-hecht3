@@ -13,7 +13,7 @@ file(GLOB SOURCE_LIST CONFIGURE_DEPENDS
         "${Sudoku_SOURCE_DIR}/src/*.cpp")
 
 # Make an automatic library - will be static or dynamic based on user setting
-add_library(sudoku ${SOURCE_LIST} ${HEADER_LIST} sudoku_game.cpp ../include/sudoku/sudoku_game.h)
+add_library(sudoku ${SOURCE_LIST} ${HEADER_LIST} sudoku_parser.cpp ../include/sudoku/sudoku_parser.h sudoku_game.cpp ../include/sudoku/sudoku_game.h)
 
 # We need this directory, and users of our library will need it too
 target_include_directories(sudoku PUBLIC ../include)

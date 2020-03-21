@@ -3,7 +3,17 @@
 #include <sudoku/solver.h>
 
 
-namespace sudoku {
+class solver {
+  std::string boards;
+  std::string Solve() {
+    if (!CheckValidBoards(boards)) {
 
-}  // namespace sudoku
+    }
+    return "";
+  }
+  public:
+    explicit solver(std::string &to_solve) {
+      boards = to_solve;
+    }
+};
 
