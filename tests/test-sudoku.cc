@@ -13,11 +13,6 @@ TEST_CASE("Sanity Check", "[addition]") {
   std::istream& input_stream = puzzle_stream;
   std::ostream& output_stream = std::cout;
   std::string tag;
-  sudoku_game to_solve = sudoku_game(
-    (std::string) "3________________________________________________________________________________");
-  sudoku::solver solve = sudoku::solver();
-  solve.Solve(to_solve.game_vec);
-//  solve.PrintBoard(to_solve.game_vec);
   parser.boards[0];
   input_stream >> parser;
   output_stream << parser;

@@ -17,8 +17,11 @@ sudoku_game::sudoku_game(std::string game_as_string) {
   int counter = 0;
   for (int i = 0; i < kColLength; i++) {
     for (int j = 0; j < kRowLength; j++) {
-      std::cout << game_vec[i][j];
-      game_vec[i][j] = game_string[counter];
+      if (game_string[counter] == '_') {
+        game_vec[i][j] = 0;
+      } else {
+        game_vec[i][j] = (int) game_string[counter];
+      }
       counter++;
     }
   }

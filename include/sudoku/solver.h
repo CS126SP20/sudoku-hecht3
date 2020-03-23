@@ -7,10 +7,10 @@
 namespace sudoku {
   class solver {
     public:
-      bool Solve(char board[kColLength][kRowLength]);
-      std::vector<int> FindEmptyCell(char board[kColLength][kRowLength]);
-      bool CheckValidMove(char board[kColLength][kRowLength], int i, int j, int move);
-      void PrintBoard(char board[kColLength][kRowLength]);
+      bool Solve(int board[kColLength][kRowLength]);
+      std::vector<int> FindEmptyCell(int board[kColLength][kRowLength]);
+      bool CheckValidMove(int board[kColLength][kRowLength], int i, int j, int move);
+      void PrintBoard(int board[kColLength][kRowLength]);
   };
 
 }  // namespace sudoku

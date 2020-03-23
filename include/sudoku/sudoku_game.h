@@ -15,7 +15,7 @@ const int kRowLength = 9;
 class sudoku_game {
   public:
     explicit sudoku_game(std::string game_as_string);
-    char game_vec[kColLength][kRowLength];
+    int game_vec[kColLength][kRowLength];
 };
 
 

@@ -13,10 +13,7 @@
 
 namespace sudoku {
   class sudoku_parser {
-    std::string fileInputString;
-    bool isValid;
     public:
-      std::string boards;
       friend std::istream &operator >> (std::istream &input, sudoku_parser const& game);
       friend std::ostream &operator << (std::ostream &output, sudoku_parser const& game);
   };
@@ -30,9 +27,7 @@ std::istream &operator >> (std::istream &input, sudoku_parser &games) {
   games.boards.append(contents.c_str());
   if (games.CheckValidSPF(games.boards)) {
     input >> games.boards;
-//    std::vector<std::reference_wrapper<std::string>> board_vec;
-//    std::vector<std::reference_wrapper<sudoku_game>> boards_as_games =
-      //games.SplitIntoGames(games.boards, '\n');
+      games.SplitIntoGames(games.boards, '\n');
   }
   return input;
 }
@@ -71,11 +66,10 @@ sudoku_parser::SplitIntoGames(const std::string &s, char delimiter) {
   // Added the above boolean to exclude the #spf1.0 line
   while (std::getline(tokenStream, token, delimiter)) {
     if (!is_first) {
-//      std::string &str = token;
-//      sudoku_game to_solve = sudoku_game(str);
-//      sudoku::solver solve = sudoku::solver();
-//      solve.Solve(to_solve.game_vec);
-//      solve.PrintBoard(to_solve.game_vec);
+      std::string &str = token;
+      sudoku_game to_solve = sudoku_game(str);
+      sudoku::solver solve = sudoku::solver();
+      solve.Solve(to_solve.game_vec);
     }
     is_first = false;
   }
