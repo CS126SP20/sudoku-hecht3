@@ -4,13 +4,14 @@
 #define SUDOKU_SOLVER_H_
 #include <sudoku/sudoku_parser.h>
 
-
 namespace sudoku {
-    class solver {
-      std::string board;
-      public:
-        explicit solver(std::string &to_solve);
-    };
+  class solver {
+    public:
+      bool Solve(char board[kColLength][kRowLength]);
+      std::vector<int> FindEmptyCell(char board[kColLength][kRowLength]);
+      bool CheckValidMove(char board[kColLength][kRowLength], int i, int j, int move);
+      void PrintBoard(char board[kColLength][kRowLength]);
+  };
 
 }  // namespace sudoku
 

@@ -7,13 +7,15 @@
 
 #include <string>
 #include <vector>
-#include <sudoku/sudoku_parser.h>
+#include <functional>
 
+const int kColLength = 9;
+const int kRowLength = 9;
 
 class sudoku_game {
   public:
     explicit sudoku_game(std::string game_as_string);
-    std::string game_string;
+    char game_vec[kColLength][kRowLength];
 };
 
 
