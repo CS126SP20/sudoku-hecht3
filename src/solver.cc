@@ -12,7 +12,6 @@ class solver {
 };
 
 bool sudoku::solver::Solve(int board[kColLength][kRowLength]) {
-  std::cout << (int) board[0][0];
   std::vector<int> nextEmptyCell;
   nextEmptyCell = FindEmptyCell(board);
   if (nextEmptyCell[0] == -1) {
@@ -76,4 +75,15 @@ bool sudoku::solver::CheckValidMove(int board[kColLength][kRowLength], int i,
   return (rowValid && colValid && sectorValid);
 }
 
-
+void sudoku::solver::PrintBoard(int board[kColLength][kRowLength]) {
+  std::cout << '\n';
+  for (int i = 0; i < kColLength; i++) {
+    for (int j = 0; j < kRowLength; j++) {
+      std::cout << " │ ";
+      std::cout << board[i][j];
+    }
+    std::cout << '\n';
+    std::cout << "═══╤═══╤═══╦═══╤═══╤═══╦═══╤═══╤═══";
+    std::cout << '\n';
+  }
+}
