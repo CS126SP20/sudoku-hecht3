@@ -17,7 +17,6 @@ namespace sudoku {
       friend std::istream &operator >> (std::istream &input, sudoku_parser const& game);
       friend std::ostream &operator << (std::ostream &output, sudoku_parser const& game);
   };
-
 } // namespace sudoku
 
 
