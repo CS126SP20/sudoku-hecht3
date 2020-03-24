@@ -11,10 +11,12 @@ sudoku_game::sudoku_game(std::string game_as_string) {
   for (int i = 0; i < kColLength; i++) {
     for (int j = 0; j < kRowLength; j++) {
       if (game_string[counter] == '_') {
-        game_vec[i][j] = 0;
+        game_arr[i][j] = 0;
       } else {
+        // Need to subtract the ASCII value of 0 from the given values because
+        // they are stored as chars right now instead of ints.
         int num = game_string[counter] - '0';
-        game_vec[i][j] = num;
+        game_arr[i][j] = num;
       }
       counter++;
     }

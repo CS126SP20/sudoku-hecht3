@@ -6,19 +6,21 @@
 #include <iostream>
 
 const int kSectorSize = 3;
+const int kMaxMove = 9;
+const int kMinMove = 1;
 
-class solver {
+// https://www.youtube.com/watch?v=auK3PSZoidc was used as a reference in
+// creating this algorithm. No code was taken directly from it
+// (the example in the video was in python)
 
-};
-
-bool sudoku::solver::Solve(int board[kColLength][kRowLength]) {
+bool sudoku::solver::Solve(int (&board)[kColLength][kRowLength]) {
   std::vector<int> nextEmptyCell;
   nextEmptyCell = FindEmptyCell(board);
   if (nextEmptyCell[0] == -1) {
     PrintBoard(board);
     return true;
   }
-  for (int move = 1; move < 10; move++) {
+  for (int move = kMinMove; move <= kMaxMove; move++) {
     if (CheckValidMove(board, nextEmptyCell[0], nextEmptyCell[1], move)) {
       board[nextEmptyCell[0]][nextEmptyCell[1]] = move;
       if (Solve(board)) {
@@ -31,8 +33,8 @@ bool sudoku::solver::Solve(int board[kColLength][kRowLength]) {
 }
 
 std::vector<int>
-sudoku::solver::FindEmptyCell(int board[kColLength][kRowLength]) {
-  std::vector<int> coords {-1, -1};
+sudoku::solver::FindEmptyCell(const int (&board)[kColLength][kRowLength]) {
+  std::vector<int> coords{-1, -1};
   for (int i = 0; i < kColLength; i++) {
     for (int j = 0; j < kRowLength; j++) {
       if (board[i][j] == 0) {
@@ -44,8 +46,8 @@ sudoku::solver::FindEmptyCell(int board[kColLength][kRowLength]) {
   return coords;
 }
 
-bool sudoku::solver::CheckValidMove(int board[kColLength][kRowLength], int i,
-                                    int j, int move) {
+bool sudoku::solver::CheckValidMove(const int (&board)[kColLength][kRowLength],
+                                    int i, int j, int move) {
   bool rowValid = true;
   for (int p = 0; p < kRowLength; p++) {
     if (move == board[i][p]) {
@@ -75,7 +77,7 @@ bool sudoku::solver::CheckValidMove(int board[kColLength][kRowLength], int i,
   return (rowValid && colValid && sectorValid);
 }
 
-void sudoku::solver::PrintBoard(int board[kColLength][kRowLength]) {
+void sudoku::solver::PrintBoard(const int (&board)[kColLength][kRowLength]) {
   std::cout << '\n';
   for (int i = 0; i < kColLength; i++) {
     for (int j = 0; j < kRowLength; j++) {

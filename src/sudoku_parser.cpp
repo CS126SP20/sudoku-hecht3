@@ -11,34 +11,28 @@
 #include <sudoku/solver.h>
 #include <functional>
 
-namespace sudoku {
-  class sudoku_parser {
-    public:
-      friend std::istream &operator >> (std::istream &input, sudoku_parser const& game);
-      friend std::ostream &operator << (std::ostream &output, sudoku_parser const& game);
-  };
-} // namespace sudoku
-
-
-std::istream &operator >> (std::istream &input, sudoku_parser &games) {
+std::istream &operator>>(std::istream &input, sudoku_parser &games) {
+  // The following iterator was taken from
+  // https://en.cppreference.com/w/cpp/iterator/istreambuf_iterator
   std::string contents((std::istreambuf_iterator<char>(input)),
                        std::istreambuf_iterator<char>());
   games.boards.append(contents.c_str());
   if (games.CheckValidSPF(games.boards)) {
     input >> games.boards;
-      games.SplitIntoGames(games.boards, '\n');
+    games.SplitIntoGames(games.boards, '\n');
   }
   return input;
 }
 
-std::ostream &operator << (std::ostream &output, sudoku_parser const& game) {
-  output << game.boards;
+std::ostream &operator<<(std::ostream &output, sudoku_parser const &games) {
+  output << games.boards;
 }
 
 bool sudoku_parser::CheckValidSPF(std::string &boards) {
-  if (  !(boards.substr(0, kSPFLength) == "#spf1.0")
-       || boards.find_first_not_of("_123456789\n", kSPFLength + 1) != std::string::npos
-       || boards.find_first_of('\n') != kSPFLength) {
+  if (!(boards.substr(0, kSPFLength) == "#spf1.0")
+      || (boards.find_first_not_of("_123456789\n", kSPFLength + 1)
+          != std::string::npos)
+      || (boards.find_first_of('\n') != kSPFLength)) {
     return false;
   }
   int new_line_count = 0;
@@ -68,7 +62,7 @@ sudoku_parser::SplitIntoGames(const std::string &s, char delimiter) {
       std::string &str = token;
       sudoku_game to_solve = sudoku_game(str);
       sudoku::solver solve = sudoku::solver();
-      solve.Solve(to_solve.game_vec);
+      solve.Solve(to_solve.game_arr);
     }
     is_first = false;
   }
