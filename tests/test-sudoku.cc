@@ -131,3 +131,29 @@ TEST_CASE("CheckValidMoveValid", "[ValidMove]") {
   REQUIRE(solve.CheckValidMove(to_solve.game_arr, 5, 5, 3));
   REQUIRE(solve.CheckValidMove(to_solve.game_arr, 8, 0, 9));
 }
+
+// Print some boards to demonstrate output operator overloading and general
+// functionality
+
+TEST_CASE("Print boards", "[Print]") {
+  std::ifstream puzzle_stream1("data/emptyBoard.spf");
+  sudoku_parser parser1;
+  std::istream& input_stream1 = puzzle_stream1;
+  std::ostream& output_stream1 = std::cout;
+  input_stream1 >> parser1;
+  output_stream1 << parser1;
+
+  std::ifstream puzzle_stream2("data/twoBoards.spf");
+  sudoku_parser parser2;
+  std::istream& input_stream2 = puzzle_stream2;
+  std::ostream& output_stream2 = std::cout;
+  input_stream2 >> parser2;
+  output_stream2 << parser2;
+
+  std::ifstream puzzle_stream3("data/threeBoards.spf");
+  sudoku_parser parser3;
+  std::istream& input_stream3 = puzzle_stream3;
+  std::ostream& output_stream3 = std::cout;
+  input_stream3 >> parser3;
+  output_stream3 << parser3;
+}

@@ -2,14 +2,16 @@
 
 #include <sudoku/solver.h>
 #include <sudoku/sudoku_game.h>
-#include <iostream>
 #include <cmath>
 
+/** The highest number that can be played on the board. */
 const int kMaxMove = 9;
+/** The lowest number that can be played on the board. */
 const int kMinMove = 1;
 // According to https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-s095-programming-for-the-puzzled-january-iap-2018/puzzle-8-you-wont-want-to-play-sudoku-again/MIT6_S095IAP18_Puzzle_8.pdf
 // the hardest sudoku puzzle ever created takes this many backtracks.
 // In terms of our program, this many backtracks is still takes under a second.
+/** The maximum backtracks needed to solve the hardest known sudoku puzzle. */
 const int kMaxBackTracks = 335578;
 
 // https://www.youtube.com/watch?v=auK3PSZoidc was used as a reference in
@@ -40,6 +42,13 @@ bool sudoku::solver::Solve(int (&board)[kColLength][kRowLength]) {
   }
 }
 
+/**
+  * Finds the nearest empty cell to fill
+  *
+  * @param board the 2D array representing the solved board
+  * @return a vector of size 2 representing the 2D coordinates of the nearest
+  *         empty cell
+  */
 std::vector<int> FindEmptyCell(const int (&board)[kColLength][kRowLength]) {
   std::vector<int> coords{-1, -1};
   for (int i = 0; i < kColLength; i++) {

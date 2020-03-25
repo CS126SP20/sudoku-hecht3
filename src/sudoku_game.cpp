@@ -2,7 +2,6 @@
 // Created by connell on 3/21/20.
 //
 
-#include <iostream>
 #include "sudoku/sudoku_game.h"
 
 sudoku_game::sudoku_game(std::string game_as_string) {

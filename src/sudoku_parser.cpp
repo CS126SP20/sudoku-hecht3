@@ -77,9 +77,12 @@ bool sudoku_parser::CheckValidSPF(std::string &boards) {
     }
   }
   for (int i = 0; i < new_line_locations.size(); i++) {
+    // We need to subtract the initial index if we want to get a substring by
+    // (startingIndex, endingIndex)
     if (boards.substr(new_line_locations[i],
                    boards.find_first_of('\n',
-                  new_line_locations[i] + 1) - new_line_locations[i]).size() - 1
+                  new_line_locations[i] + 1)
+                    - new_line_locations[i]).size() - 1
                       != kColLength * kRowLength) {
       return false;
     }
@@ -92,11 +95,11 @@ bool sudoku_parser::CheckValidSPF(std::string &boards) {
 
 // The following function was taken from https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
 // It is used to split a string by a specified character.
-void sudoku_parser::SplitIntoGames(const std::string &s, char delimiter) {
+void sudoku_parser::SplitIntoGames(const std::string &games, char delimiter) {
   std::vector<sudoku_game> boards_as_games;
   std::vector<std::string> tokens;
   std::string token;
-  std::istringstream tokenStream(s);
+  std::istringstream tokenStream(games);
   bool is_first = true;
   // Added the above boolean to exclude the #spf1.0 line
   while (std::getline(tokenStream, token, delimiter)) {
