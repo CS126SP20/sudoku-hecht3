@@ -18,9 +18,6 @@ const int kMaxBackTracks = 335578;
 
 std::vector<int> FindEmptyCell(const int (&board)[kColLength][kRowLength]);
 
-bool CheckValidMove(const int (&board)[kColLength][kRowLength], int i,
-                    int j, int move);
-
 bool sudoku::solver::Solve(int (&board)[kColLength][kRowLength]) {
   backtracks++;
   if (backtracks < kMaxBackTracks + 1) {
@@ -56,7 +53,7 @@ std::vector<int> FindEmptyCell(const int (&board)[kColLength][kRowLength]) {
   return coords;
 }
 
-bool CheckValidMove(const int (&board)[kColLength][kRowLength],
+bool sudoku::solver::CheckValidMove(const int (&board)[kColLength][kRowLength],
                     int i, int j, int move) {
   bool row_valid = true;
   for (int p = 0; p < kRowLength; p++) {
@@ -94,3 +91,4 @@ void sudoku::solver::StoreBoard(const int (&board)[kColLength][kRowLength]) {
     }
   }
 }
+

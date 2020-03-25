@@ -8,8 +8,6 @@
 #include <sudoku/sudoku_game.h>
 #include <sudoku/solver.h>
 
-std::vector<sudoku::solver> solvers;
-
 std::istream &operator>>(std::istream &input, sudoku_parser &games) {
   // The following iterator was taken from
   // https://en.cppreference.com/w/cpp/iterator/istreambuf_iterator
@@ -28,10 +26,9 @@ std::istream &operator>>(std::istream &input, sudoku_parser &games) {
 }
 
 std::ostream &operator<<(std::ostream &output, sudoku_parser const &games) {
-  output << '\n';
-  for (int s = 0; s < solvers.size(); s++) {
-    if (solvers[s].public_board[0][0] == 0) {
-      std::string to_output = "Game ";
+  for (int s = 0; s < games.solvers.size(); s++) {
+    if (games.solvers[s].public_board[0][0] == 0) {
+      std::string to_output = "\nGame ";
       to_output.append(std::to_string(s));
       to_output.append(" was not solvable.\n\n");
       output << to_output;
@@ -43,7 +40,7 @@ std::ostream &operator<<(std::ostream &output, sudoku_parser const &games) {
       for (int i = 0; i < kColLength; i++) {
         to_output.append("║ ");
         for (int j = 0; j < kRowLength; j++) {
-          to_output.append(std::to_string(solvers[s].public_board[i][j]));
+          to_output.append(std::to_string(games.solvers[s].public_board[i][j]));
           // We have to subtract one from these constants because the array is
           // 0-indexed
           if (j < kSectorSize - 1 || j % kSectorSize != kSectorSize - 1) {

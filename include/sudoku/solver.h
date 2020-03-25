@@ -13,6 +13,9 @@ namespace sudoku {
     int public_board[kColLength][kRowLength];
     int backtracks;
 
+    bool CheckValidMove(const int (&board)[kColLength][kRowLength], int i,
+                        int j, int move);
+
     bool Solve(int (&board)[kColLength][kRowLength]);
   };
 }  // namespace sudoku
