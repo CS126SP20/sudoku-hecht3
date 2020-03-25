@@ -11,6 +11,7 @@
 
 const int kColLength = 9;
 const int kRowLength = 9;
+const int kSectorSize = 3;
 
 class sudoku_game {
 public:

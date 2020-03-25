@@ -7,15 +7,14 @@
 
 #include <string>
 #include <vector>
-#include <sudoku/sudoku_game.h>
 
 const int kSPFLength = 7;
 
 class sudoku_parser {
   bool CheckValidSPF(std::string &boards);
 
-  std::vector<std::reference_wrapper<sudoku_game>>
-  SplitIntoGames(const std::string &s, char delimiter);
+
+  void SplitIntoGames(const std::string &s, char delimiter);
 
 public:
   std::string boards;
@@ -25,5 +24,4 @@ public:
   friend std::ostream
     &operator<<(std::ostream &output, sudoku_parser const &game);
 };
-
 #endif //SUDOKU_SUDOKU_PARSER_H

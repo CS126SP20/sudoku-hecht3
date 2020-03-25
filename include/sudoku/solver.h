@@ -3,24 +3,18 @@
 #ifndef SUDOKU_SOLVER_H_
 #define SUDOKU_SOLVER_H_
 
-#include <sudoku/sudoku_parser.h>
+#include "sudoku_game.h"
 
 namespace sudoku {
   class solver {
+    void StoreBoard(const int (&board)[kColLength][kRowLength]);
+
   public:
-    int **board_to_print;
+    int public_board[kColLength][kRowLength];
+    int backtracks;
 
     bool Solve(int (&board)[kColLength][kRowLength]);
-
-    std::vector<int> FindEmptyCell(const int (&board)[kColLength][kRowLength]);
-
-    bool
-    CheckValidMove(const int (&board)[kColLength][kRowLength], int i, int j,
-                   int move);
-
-    void PrintBoard(const int (&board)[kColLength][kRowLength]);
   };
-
 }  // namespace sudoku
 
 #endif  // SUDOKU_SOLVER_H_

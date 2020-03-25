@@ -1,10 +1,8 @@
 // Copyright (c) 2020 [Your Name]. All rights reserved.
 
-#include <sudoku/solver.h>
 #include <sudoku/sudoku_parser.h>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 
 void HandleFile(std::string puzzle);
 

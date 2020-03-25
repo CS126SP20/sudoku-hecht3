@@ -2,14 +2,14 @@
 // Created by connell on 3/12/20.
 //
 
-#include <fstream>
-#include <vector>
-#include <list>
 #include "sudoku/sudoku_parser.h"
 #include <iostream>
 #include <sstream>
+#include <sudoku/sudoku_game.h>
 #include <sudoku/solver.h>
-#include <functional>
+
+std::vector<sudoku::solver> solvers;
+std::vector<bool> solvable;
 
 std::istream &operator>>(std::istream &input, sudoku_parser &games) {
   // The following iterator was taken from
@@ -25,7 +25,40 @@ std::istream &operator>>(std::istream &input, sudoku_parser &games) {
 }
 
 std::ostream &operator<<(std::ostream &output, sudoku_parser const &games) {
-  output << games.boards;
+  output << '\n';
+  for (int s = 0; s < solvers.size(); s++) {
+    if (solvers[s].public_board[0][0] == 0) {
+      std::cout << "Game ";
+      std::cout << s;
+      std::cout << " was not solvable\n\n";
+    } else {
+      std::cout << "Game ";
+      std::cout << s;
+      std::cout << " was solvable:\n";
+      output << "╔═══╤═══╤═══╦═══╤═══╤═══╦═══╤═══╤═══╗\n";
+      for (int i = 0; i < kColLength; i++) {
+        output << "║ ";
+        for (int j = 0; j < kRowLength; j++) {
+          output << solvers[s].public_board[i][j];
+          // We have to subtract one from these constants because the array is
+          // 0-indexed
+          if (j < kSectorSize - 1 || j % kSectorSize != kSectorSize - 1) {
+            output << " │ ";
+          } else {
+            output << " ║ ";
+          }
+        }
+        if (i != kColLength - 1 && i % kSectorSize != kSectorSize - 1) {
+          output << "\n╟───┼───┼───╫───┼───┼───╫───┼───┼───╢";
+        } else if (i != kColLength - 1 && i % kSectorSize == kSectorSize - 1) {
+          output << "\n╠═══╪═══╪═══╬═══╪═══╪═══╬═══╪═══╪═══╣";
+        }
+        output << '\n';
+      }
+      output << "╚═══╧═══╧═══╩═══╧═══╧═══╩═══╧═══╧═══╝\n";
+      output << '\n';
+    }
+  }
 }
 
 bool sudoku_parser::CheckValidSPF(std::string &boards) {
@@ -49,8 +82,7 @@ bool sudoku_parser::CheckValidSPF(std::string &boards) {
 
 // The following function was taken from https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
 // It is used to split a string by a specified character.
-std::vector<std::reference_wrapper<sudoku_game>>
-sudoku_parser::SplitIntoGames(const std::string &s, char delimiter) {
+void sudoku_parser::SplitIntoGames(const std::string &s, char delimiter) {
   std::vector<sudoku_game> boards_as_games;
   std::vector<std::string> tokens;
   std::string token;
@@ -62,11 +94,14 @@ sudoku_parser::SplitIntoGames(const std::string &s, char delimiter) {
       std::string &str = token;
       sudoku_game to_solve = sudoku_game(str);
       sudoku::solver solve = sudoku::solver();
-      solve.Solve(to_solve.game_arr);
+      bool solved;
+      solve.backtracks = 0;
+      solved = solve.Solve(to_solve.game_arr);
+      solvable.push_back(solved);
+      solvers.push_back(solve);
     }
     is_first = false;
   }
-  //return std::vector<std::reference_wrapper<sudoku_game>>(boards_as_games.begin(), boards_as_games.end());
 }
 
 
