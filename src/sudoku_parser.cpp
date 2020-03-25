@@ -9,7 +9,6 @@
 #include <sudoku/solver.h>
 
 std::vector<sudoku::solver> solvers;
-std::vector<bool> solvable;
 
 std::istream &operator>>(std::istream &input, sudoku_parser &games) {
   // The following iterator was taken from
@@ -18,8 +17,12 @@ std::istream &operator>>(std::istream &input, sudoku_parser &games) {
                        std::istreambuf_iterator<char>());
   games.boards.append(contents.c_str());
   if (games.CheckValidSPF(games.boards)) {
-    input >> games.boards;
+    // The input is left as the string of boards and the boards are then split
+    // into games
     games.SplitIntoGames(games.boards, '\n');
+  } else {
+    // -1 is assigned to the input through this command
+    input >> games.boards;
   }
   return input;
 }
@@ -28,35 +31,37 @@ std::ostream &operator<<(std::ostream &output, sudoku_parser const &games) {
   output << '\n';
   for (int s = 0; s < solvers.size(); s++) {
     if (solvers[s].public_board[0][0] == 0) {
-      std::cout << "Game ";
-      std::cout << s;
-      std::cout << " was not solvable\n\n";
+      std::string to_output = "Game ";
+      to_output.append(std::to_string(s));
+      to_output.append(" was not solvable.\n\n");
+      output << to_output;
     } else {
-      std::cout << "Game ";
-      std::cout << s;
-      std::cout << " was solvable:\n";
-      output << "╔═══╤═══╤═══╦═══╤═══╤═══╦═══╤═══╤═══╗\n";
+      std::string to_output = "Game ";
+      to_output.append(std::to_string(s));
+      to_output.append(" was solvable:\n");
+      to_output.append("╔═══╤═══╤═══╦═══╤═══╤═══╦═══╤═══╤═══╗\n");
       for (int i = 0; i < kColLength; i++) {
-        output << "║ ";
+        to_output.append("║ ");
         for (int j = 0; j < kRowLength; j++) {
-          output << solvers[s].public_board[i][j];
+          to_output.append(std::to_string(solvers[s].public_board[i][j]));
           // We have to subtract one from these constants because the array is
           // 0-indexed
           if (j < kSectorSize - 1 || j % kSectorSize != kSectorSize - 1) {
-            output << " │ ";
+            to_output.append(" │ ");
           } else {
-            output << " ║ ";
+            to_output.append(" ║ ");
           }
         }
         if (i != kColLength - 1 && i % kSectorSize != kSectorSize - 1) {
-          output << "\n╟───┼───┼───╫───┼───┼───╫───┼───┼───╢";
+          to_output.append("\n╟───┼───┼───╫───┼───┼───╫───┼───┼───╢");
         } else if (i != kColLength - 1 && i % kSectorSize == kSectorSize - 1) {
-          output << "\n╠═══╪═══╪═══╬═══╪═══╪═══╬═══╪═══╪═══╣";
+          to_output.append("\n╠═══╪═══╪═══╬═══╪═══╪═══╬═══╪═══╪═══╣");
         }
-        output << '\n';
+        to_output.append("\n");
       }
-      output << "╚═══╧═══╧═══╩═══╧═══╧═══╩═══╧═══╧═══╝\n";
-      output << '\n';
+      to_output.append("╚═══╧═══╧═══╩═══╧═══╧═══╩═══╧═══╧═══╝\n");
+      to_output.append("\n");
+      output << to_output;
     }
   }
 }
@@ -68,13 +73,21 @@ bool sudoku_parser::CheckValidSPF(std::string &boards) {
       || (boards.find_first_of('\n') != kSPFLength)) {
     return false;
   }
-  int new_line_count = 0;
+  std::vector<int> new_line_locations;
   for (int i = 0; i < boards.size(); i++) {
     if (boards[i] == '\n') {
-      new_line_count++;
+      new_line_locations.push_back(i);
     }
   }
-  if (new_line_count > boards.size() / (kColLength * kRowLength)) {
+  for (int i = 0; i < new_line_locations.size(); i++) {
+    if (boards.substr(new_line_locations[i],
+                   boards.find_first_of('\n',
+                  new_line_locations[i] + 1) - new_line_locations[i]).size() - 1
+                      != kColLength * kRowLength) {
+      return false;
+    }
+  }
+  if (new_line_locations.size() > boards.size() / (kColLength * kRowLength)) {
     return false;
   }
   return true;
@@ -94,10 +107,8 @@ void sudoku_parser::SplitIntoGames(const std::string &s, char delimiter) {
       std::string &str = token;
       sudoku_game to_solve = sudoku_game(str);
       sudoku::solver solve = sudoku::solver();
-      bool solved;
       solve.backtracks = 0;
-      solved = solve.Solve(to_solve.game_arr);
-      solvable.push_back(solved);
+      solve.Solve(to_solve.game_arr);
       solvers.push_back(solve);
     }
     is_first = false;

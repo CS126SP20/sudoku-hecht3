@@ -57,34 +57,34 @@ std::vector<int> FindEmptyCell(const int (&board)[kColLength][kRowLength]) {
 }
 
 bool CheckValidMove(const int (&board)[kColLength][kRowLength],
-                                    int i, int j, int move) {
-  bool rowValid = true;
+                    int i, int j, int move) {
+  bool row_valid = true;
   for (int p = 0; p < kRowLength; p++) {
     if (move == board[i][p]) {
-      rowValid = false;
+      row_valid = false;
     }
   }
-  bool colValid = true;
-  bool sectorValid = true;
-  if (rowValid) {
+  bool col_valid = true;
+  bool sector_valid = true;
+  if (row_valid) {
     for (int p = 0; p < kColLength; p++) {
       if (move == board[p][j]) {
-        colValid = false;
+        col_valid = false;
       }
     }
-    if (colValid) {
-      int sectorLeft = kSectorSize * floor(i / kSectorSize);
-      int sectorTop = kSectorSize * floor(j / kSectorSize);
-      for (int p = sectorLeft; p < sectorLeft + kSectorSize; p++) {
-        for (int q = sectorTop; q < sectorTop + kSectorSize; q++) {
+    if (col_valid) {
+      int sector_left = kSectorSize * floor(i / kSectorSize);
+      int sector_top = kSectorSize * floor(j / kSectorSize);
+      for (int p = sector_left; p < sector_left + kSectorSize; p++) {
+        for (int q = sector_top; q < sector_top + kSectorSize; q++) {
           if (board[p][q] == move) {
-            sectorValid = false;
+            sector_valid = false;
           }
         }
       }
     }
   }
-  return (rowValid && colValid && sectorValid);
+  return (row_valid && col_valid && sector_valid);
 }
 
 void sudoku::solver::StoreBoard(const int (&board)[kColLength][kRowLength]) {
